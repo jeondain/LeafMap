@@ -1,7 +1,4 @@
-FROM eclipse-temurin:17-jdk-jammy
-
-# JAR 파일 복사
-COPY build/libs/docker-ex-0.0.1-SNAPSHOT.jar /app/app.jar
-
-# 애플리케이션 실행
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+FROM openjdk:17-jdk
+ARG JAR_FILE=./build/libs/*-SNAPSHOT.jar
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT [ "java", "-jar", "/app.jar" ]
