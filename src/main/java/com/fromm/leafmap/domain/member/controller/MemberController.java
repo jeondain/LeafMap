@@ -1,6 +1,7 @@
 package com.fromm.leafmap.domain.member.controller;
 
 import com.fromm.leafmap.domain.member.dto.MemberRequestDTO;
+import com.fromm.leafmap.domain.member.dto.MemberResponseDTO;
 import com.fromm.leafmap.domain.member.service.MemberService;
 import com.fromm.leafmap.global.apiPayload.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,5 +26,12 @@ public class MemberController {
     public ApiResponse<String> signUp(@RequestBody @Valid MemberRequestDTO.MemberSignupDTO memberSignupDTO) throws Exception {
         memberService.signup(memberSignupDTO);
         return ApiResponse.onSuccess("회원가입 성공");
+    }
+
+    @PostMapping("/login")
+    @Operation(summary = "로그인")
+    public ApiResponse<MemberResponseDTO.MemberLoginResultDTO> login(@RequestBody @Valid MemberRequestDTO.MemberLoginDTO memberLoginDTO) throws Exception {
+        MemberResponseDTO.MemberLoginResultDTO memberLoginResultDTO = memberService.login(memberLoginDTO);
+        return ApiResponse.onSuccess(memberLoginResultDTO);
     }
 }

@@ -22,4 +22,13 @@ public class MemberRequestDTO {
         private String major;
         private String desiredMajor;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MemberLoginDTO {
+        private String loginId;
+        private String password;
+    }
 }

@@ -18,6 +18,8 @@ public enum ErrorStatus implements BaseErrorCode {
 
     // Member
     MEMBER_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "MEMBER400", "이미 존재하는 ID입니다."),
+    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER404", "해당하는 회원이 존재하지 않습니다."),
+    INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "MEMBER401", "비밀번호가 올바르지 않습니다."),
 
     // Major
     MAJOR_NOT_FOUND(HttpStatus.NOT_FOUND, "MAJOR404", "해당하는 전공이 존재하지 않습니다.")
