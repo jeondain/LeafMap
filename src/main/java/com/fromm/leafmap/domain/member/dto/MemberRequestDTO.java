@@ -1,6 +1,6 @@
 package com.fromm.leafmap.domain.member.dto;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,9 +13,9 @@ public class MemberRequestDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class MemberSignupDTO {
-        @NotNull(message = "id는 필수입니다.")
+        @NotBlank(message = "id는 필수입니다.")
         private String loginId;
-        @NotNull(message = "비밀번호는 필수입니다.")
+        @NotBlank(message = "비밀번호는 필수입니다.")
         private String password;
         private String nickname;
         private String studentId;

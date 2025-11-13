@@ -23,7 +23,7 @@ public class MemberController {
 
     @PostMapping("/signup")
     @Operation(summary = "회원가입")
-    public ApiResponse<String> signUp(@RequestBody @Valid MemberRequestDTO.MemberSignupDTO memberSignupDTO) throws Exception {
+    public ApiResponse<String> signUp(@RequestBody @Valid MemberRequestDTO.MemberSignupDTO memberSignupDTO) {
         memberService.signup(memberSignupDTO);
         return ApiResponse.onSuccess("회원가입 성공");
     }
