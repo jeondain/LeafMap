@@ -30,7 +30,8 @@ public class SecurityConfig {
                         ).permitAll()
                         .requestMatchers(
                                 "/api/signup",
-                                "/api/login"
+                                "/api/login",
+                                "/api/majors/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 );
