@@ -12,6 +12,10 @@ jobs:
       - name: Checkout Source
         uses: actions/checkout@v3
 
+      - name: Set up application.yml
+        run: |
+          echo "${{ secrets.APPLICATION_YML }}" > src/main/resources/application.yml
+
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
@@ -35,8 +39,8 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/spring-app .
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/spring-app
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/leaf-map .
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/leaf-map
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v0.1.10
@@ -45,7 +49,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/spring-app
-            docker stop spring-app || true
-            docker rm spring-app || true
-            docker run -d --name spring-app -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/spring-app
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/leaf-map
+            docker stop leaf-map || true
+            docker rm leaf-map || true
+            docker run -d --name leaf-map -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/leaf-map
