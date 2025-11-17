@@ -38,4 +38,8 @@ public class Major extends BaseEntity {
 
     @OneToMany(mappedBy = "major", cascade = CascadeType.ALL)
     private List<MajorCategoryMap> majorCategoryMaps = new ArrayList<>();
+
+    public void setCurriculumUrl(String curriculumUrl) {
+        this.curriculumUrl = curriculumUrl;
+    }
 }
