@@ -8,7 +8,7 @@ import com.fromm.leafmap.domain.member.entity.Member;
 import com.fromm.leafmap.domain.member.repository.MemberRepository;
 import com.fromm.leafmap.global.apiPayload.code.status.ErrorStatus;
 import com.fromm.leafmap.global.apiPayload.exception.handler.ErrorHandler;
-import com.fromm.leafmap.global.security.JwtProvider;
+import com.fromm.leafmap.global.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class MemberSerivceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final MajorRepository majorRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtProvider jwtProvider;
+    private final JwtService jwtService;
 
     @Override
     public Member signup(MemberRequestDTO.MemberSignupDTO memberSignupDto) {
@@ -61,11 +61,11 @@ public class MemberSerivceImpl implements MemberService {
             throw new ErrorHandler(ErrorStatus.INVALID_PASSWORD);
         }
 
-        String token = jwtProvider.generateToken(member.getLoginId());
+        String accessToken = jwtService.createAccessToken(member.getLoginId());
 
         return MemberResponseDTO.MemberLoginResultDTO.builder()
                 .id(member.getId())
-                .accessToken(token)
+                .accessToken(accessToken)
                 .build();
     }
 }
