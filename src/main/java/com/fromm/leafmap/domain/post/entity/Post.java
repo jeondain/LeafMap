@@ -58,4 +58,29 @@ public class Post extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "major_id")
     private Major major;
+
+    public void increaseLike() {
+        if (this.likeCount == null) {
+            this.likeCount = 0;
+        }
+        this.likeCount++;
+
+        updateBadge();
+    }
+
+    public void decreaseLike() {
+        if (this.likeCount == null || this.likeCount == 0) {
+            this.likeCount = 0;
+            updateBadge();
+            return;
+        }
+        this.likeCount--;
+
+        updateBadge();
+    }
+
+    // 추천 개수에 따라 badge 자동 업데이트
+    private void updateBadge() {
+        this.badge = (this.likeCount >= 10);
+    }
 }

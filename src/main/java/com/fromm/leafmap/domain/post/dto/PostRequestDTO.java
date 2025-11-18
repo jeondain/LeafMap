@@ -6,7 +6,6 @@ public class PostRequestDTO {
 
     @Builder
     @Getter
-    @Setter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class AddPostRequestDTO {

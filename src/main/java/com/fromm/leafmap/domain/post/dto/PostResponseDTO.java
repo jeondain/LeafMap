@@ -16,13 +16,13 @@ public class PostResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class AddPostResultDTO {
-        private Long id;
+        private Long postId;
     }
 
     @Getter
     @Builder
     public static class PostPreviewDTO {
-        private Long id;
+        private Long postId;
         private String title;
         private String contentPreview; // 내용 첫 줄
 
@@ -44,7 +44,7 @@ public class PostResponseDTO {
     @AllArgsConstructor
     public static class PostDetailResultDTO {
 
-        private Long id;
+        private Long postId;
         private BoardType boardType;
         private String title;
         private String content;
@@ -54,6 +54,7 @@ public class PostResponseDTO {
         private Integer likeCount;
         private Boolean badge;
         private Boolean isWriter;
+        private Boolean isLiked;
         private LocalDateTime createdAt;
 
         private MemberResponseDTO.MemberDTO member;

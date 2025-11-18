@@ -1,10 +1,12 @@
 package com.fromm.leafmap.domain.post.controller;
 
 import com.fromm.leafmap.domain.member.entity.Member;
+import com.fromm.leafmap.domain.post.dto.PostLikeResponseDTO;
 import com.fromm.leafmap.domain.post.dto.PostRequestDTO;
 import com.fromm.leafmap.domain.post.dto.PostResponseDTO;
 import com.fromm.leafmap.domain.post.entity.BoardType;
 import com.fromm.leafmap.domain.post.service.MajortipsPostInitService;
+import com.fromm.leafmap.domain.post.service.PostLikeService;
 import com.fromm.leafmap.domain.post.service.PostService;
 import com.fromm.leafmap.global.annotation.CurrentMember;
 import com.fromm.leafmap.global.apiPayload.ApiResponse;
@@ -23,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class PostController {
 
     private final PostService postService;
+    private final PostLikeService postLikeService;
     private final MajortipsPostInitService majortipsPostInitService;
 
     @PostMapping(value = "/MAJOR_TIPS/init")
@@ -67,5 +70,16 @@ public class PostController {
 
         PostResponseDTO.PostDetailResultDTO postDetailResultDTO = postService.getPostDetail(boardType, postId, member);
         return ApiResponse.onSuccess(postDetailResultDTO);
+    }
+
+    @PostMapping(value ="/{boardType}/{postId}/like")
+    @Operation(summary = "게시글 추천 토글", description = "추천하지 않은 상태라면 추천이 추가되고, 이미 추천한 상태라면 추천이 취소됩니다.")
+    public ApiResponse<PostLikeResponseDTO.PostLikeResultDTO> toggleLike(
+            @PathVariable BoardType boardType,
+            @PathVariable Long postId,
+            @CurrentMember Member member) {
+
+        PostLikeResponseDTO.PostLikeResultDTO postLikeResultDTO = postLikeService.toggleLike(boardType, postId, member);
+        return ApiResponse.onSuccess(postLikeResultDTO);
     }
 }
