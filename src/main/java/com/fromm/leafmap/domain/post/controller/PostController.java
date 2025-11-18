@@ -58,4 +58,14 @@ public class PostController {
         return ApiResponse.onSuccess(postListResultDTO);
     }
 
+    @GetMapping(value = "/{boardType}/{postId}")
+    @Operation(summary = "게시판 상세 조회")
+    public ApiResponse<PostResponseDTO.PostDetailResultDTO> getPostDetail(
+            @PathVariable BoardType boardType,
+            @PathVariable Long postId,
+            @CurrentMember Member member) {
+
+        PostResponseDTO.PostDetailResultDTO postDetailResultDTO = postService.getPostDetail(boardType, postId, member);
+        return ApiResponse.onSuccess(postDetailResultDTO);
+    }
 }

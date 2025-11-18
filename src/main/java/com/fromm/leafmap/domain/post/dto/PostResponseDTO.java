@@ -1,10 +1,12 @@
 package com.fromm.leafmap.domain.post.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.fromm.leafmap.domain.comment.dto.CommentResponseDTO;
+import com.fromm.leafmap.domain.major.dto.MajorResponseDTO;
+import com.fromm.leafmap.domain.member.dto.MemberResponseDTO;
+import com.fromm.leafmap.domain.post.entity.BoardType;
+import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class PostResponseDTO {
@@ -20,7 +22,7 @@ public class PostResponseDTO {
     @Getter
     @Builder
     public static class PostPreviewDTO {
-        private Long postId;
+        private Long id;
         private String title;
         private String contentPreview; // 내용 첫 줄
 
@@ -34,5 +36,29 @@ public class PostResponseDTO {
         private List<PostPreviewDTO> posts;
         private Long nextCursor;
         private boolean hasNext;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class PostDetailResultDTO {
+
+        private Long id;
+        private BoardType boardType;
+        private String title;
+        private String content;
+        private String address;
+        private String imageUrl;
+        private Boolean isPublic;
+        private Integer likeCount;
+        private Boolean badge;
+        private Boolean isWriter;
+        private LocalDateTime createdAt;
+
+        private MemberResponseDTO.MemberDTO member;
+        private MajorResponseDTO.MajorDTO major;
+
+        private List<CommentResponseDTO.CommentDTO> comments;
     }
 }

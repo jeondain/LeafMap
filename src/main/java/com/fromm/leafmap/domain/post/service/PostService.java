@@ -11,4 +11,6 @@ public interface PostService {
     PostResponseDTO.AddPostResultDTO addPost(BoardType boardType, PostRequestDTO.AddPostRequestDTO request, MultipartFile image, Member member);
 
     PostResponseDTO.PostListResultDTO getPostList(BoardType boardType, Member member, Long cursor, int limit);
+
+    PostResponseDTO.PostDetailResultDTO getPostDetail(BoardType boardType, Long postId, Member member);
 }

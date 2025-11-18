@@ -1,11 +1,16 @@
 package com.fromm.leafmap.domain.post.service;
 
+import com.fromm.leafmap.domain.comment.dto.CommentResponseDTO;
+import com.fromm.leafmap.domain.major.dto.MajorResponseDTO;
+import com.fromm.leafmap.domain.member.dto.MemberResponseDTO;
 import com.fromm.leafmap.domain.member.entity.Member;
 import com.fromm.leafmap.domain.post.dto.PostRequestDTO;
 import com.fromm.leafmap.domain.post.dto.PostResponseDTO;
 import com.fromm.leafmap.domain.post.entity.BoardType;
 import com.fromm.leafmap.domain.post.entity.Post;
 import com.fromm.leafmap.domain.post.repository.PostRepository;
+import com.fromm.leafmap.global.apiPayload.code.status.ErrorStatus;
+import com.fromm.leafmap.global.apiPayload.exception.handler.ErrorHandler;
 import com.fromm.leafmap.global.s3.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -62,7 +67,7 @@ public class PostServiceImpl implements PostService {
         List<PostResponseDTO.PostPreviewDTO> previews = posts.stream()
                 .map(post -> {
                     PostResponseDTO.PostPreviewDTO.PostPreviewDTOBuilder builder = PostResponseDTO.PostPreviewDTO.builder()
-                            .postId(post.getId())
+                            .id(post.getId())
                             .title(post.getTitle())
                             .contentPreview(extractFirstLine(post.getContent()));
 
@@ -89,5 +94,71 @@ public class PostServiceImpl implements PostService {
     private String extractFirstLine(String content) {
         if (content == null || content.isBlank()) return "";
         return content.split("\n")[0];
+    }
+
+    @Override
+    @Transactional
+    public PostResponseDTO.PostDetailResultDTO getPostDetail(BoardType boardType, Long postId, Member member) {
+        Post post = postRepository.findByIdAndBoardType(postId, boardType)
+                .orElseThrow(() -> new ErrorHandler(ErrorStatus.POST_NOT_FOUND));
+
+        // 게시글 작성자 여부
+        boolean isPostWriter = member != null && post.getMember() != null
+                && member.getId().equals(post.getMember().getId());
+
+        // CommentDTO
+        List<CommentResponseDTO.CommentDTO> commentDTOs = post.getComments().stream()
+                .map(c -> {
+                    boolean isCommentWriter = member != null && c.getMember() != null
+                            && member.getId().equals(c.getMember().getId());
+
+                    return CommentResponseDTO.CommentDTO.builder()
+                            .id(c.getId())
+                            .content(c.getContent())
+                            .nickname(c.getMember().getNickname())
+                            .isWriter(isCommentWriter)
+                            .createdAt(c.getCreatedAt())
+                            .build();
+                })
+                .toList();
+
+        // MemberDTO
+        MemberResponseDTO.MemberDTO memberDTO = null;
+        if (post.getMember() != null) {
+            memberDTO = MemberResponseDTO.MemberDTO.builder()
+                    .id(post.getMember().getId())
+                    .nickname(post.getMember().getNickname())
+                    .build();
+        }
+
+        // MajorDTO (MAJOR_TIPS 게시판)
+        MajorResponseDTO.MajorDTO majorDTO = null;
+        if (boardType == BoardType.MAJOR_TIPS && post.getMajor() != null) {
+            majorDTO = MajorResponseDTO.MajorDTO.builder()
+                    .id(post.getMajor().getId())
+                    .name(post.getMajor().getName())
+                    .description(post.getMajor().getDescription())
+                    .keywords(post.getMajor().getKeywords())
+                    .career(post.getMajor().getCareer())
+                    .curriculumUrl(post.getMajor().getCurriculumUrl())
+                    .build();
+        }
+
+        return PostResponseDTO.PostDetailResultDTO.builder()
+                .id(post.getId())
+                .boardType(post.getBoardType())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .address(post.getAddress())
+                .imageUrl(post.getImageUrl())
+                .isPublic(post.getIsPublic())
+                .likeCount(post.getLikeCount())
+                .badge(post.getBadge())
+                .createdAt(post.getCreatedAt())
+                .isWriter(isPostWriter)
+                .member(memberDTO)
+                .major(majorDTO)
+                .comments(commentDTOs)
+                .build();
     }
 }
