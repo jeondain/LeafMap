@@ -1,5 +1,6 @@
 package com.fromm.leafmap.domain.post.entity;
 
+import com.fromm.leafmap.domain.major.entity.Major;
 import com.fromm.leafmap.domain.member.entity.Member;
 import com.fromm.leafmap.global.common.BaseEntity;
 import jakarta.persistence.*;
@@ -52,4 +53,8 @@ public class Post extends BaseEntity {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<PostLike> likes = new ArrayList<>();
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "major_id")
+    private Major major;
 }

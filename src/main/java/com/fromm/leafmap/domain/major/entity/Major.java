@@ -1,6 +1,7 @@
 package com.fromm.leafmap.domain.major.entity;
 
 import com.fromm.leafmap.domain.member.entity.Member;
+import com.fromm.leafmap.domain.post.entity.Post;
 import com.fromm.leafmap.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -38,6 +39,9 @@ public class Major extends BaseEntity {
 
     @OneToMany(mappedBy = "major", cascade = CascadeType.ALL)
     private List<MajorCategoryMap> majorCategoryMaps = new ArrayList<>();
+
+    @OneToOne(mappedBy = "major", fetch = FetchType.LAZY)
+    private Post post;
 
     public void setCurriculumUrl(String curriculumUrl) {
         this.curriculumUrl = curriculumUrl;

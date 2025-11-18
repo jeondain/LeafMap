@@ -4,6 +4,7 @@ import com.fromm.leafmap.domain.member.entity.Member;
 import com.fromm.leafmap.domain.post.dto.PostRequestDTO;
 import com.fromm.leafmap.domain.post.dto.PostResponseDTO;
 import com.fromm.leafmap.domain.post.entity.BoardType;
+import com.fromm.leafmap.domain.post.service.MajortipsPostInitService;
 import com.fromm.leafmap.domain.post.service.PostService;
 import com.fromm.leafmap.global.annotation.CurrentMember;
 import com.fromm.leafmap.global.apiPayload.ApiResponse;
@@ -22,6 +23,14 @@ import org.springframework.web.multipart.MultipartFile;
 public class PostController {
 
     private final PostService postService;
+    private final MajortipsPostInitService majortipsPostInitService;
+
+    @PostMapping(value = "/MAJOR_TIPS/init")
+    @Operation(summary = "학과 게시판 게시글 생성 (연동 X)")
+    public ApiResponse<String> createMajortipsPosts() {
+        majortipsPostInitService.createPostsFromMajors();
+        return ApiResponse.onSuccess("Majortips 게시글 생성 완료");
+    }
 
     @PostMapping(value = "/{boardType}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "게시글 작성", description = "게시글 정보는 JSON 형식으로, 이미지는 Multipart(Form-Data) 형식으로 함께 전달해주세요.\n\n" )

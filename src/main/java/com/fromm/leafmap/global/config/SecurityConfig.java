@@ -40,7 +40,8 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/signup",
                                 "/api/login",
-                                "/api/majors/**"
+                                "/api/majors/**",
+                                "api/posts/MAJOR_TIPS/init"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

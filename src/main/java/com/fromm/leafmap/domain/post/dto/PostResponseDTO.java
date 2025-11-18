@@ -23,6 +23,9 @@ public class PostResponseDTO {
         private Long postId;
         private String title;
         private String contentPreview; // 내용 첫 줄
+
+        private Long majorId;
+        private String majorName;
     }
 
     @Getter
