@@ -8,10 +8,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
     boolean existsByMajorId(Long majorId);
+
+    Optional<Post> findByIdAndBoardType(Long id, BoardType boardType);
 
     @Query("SELECT p FROM Post p " +
             "WHERE p.boardType = :boardType " +

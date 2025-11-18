@@ -1,6 +1,7 @@
-package com.fromm.leafmap.domain.post.entity;
+package com.fromm.leafmap.domain.comment.entity;
 
 import com.fromm.leafmap.domain.member.entity.Member;
+import com.fromm.leafmap.domain.post.entity.Post;
 import com.fromm.leafmap.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;

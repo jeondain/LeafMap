@@ -22,7 +22,10 @@ public enum ErrorStatus implements BaseErrorCode {
     INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "MEMBER401", "비밀번호가 올바르지 않습니다."),
 
     // Major
-    MAJOR_NOT_FOUND(HttpStatus.NOT_FOUND, "MAJOR404", "해당하는 전공이 존재하지 않습니다.")
+    MAJOR_NOT_FOUND(HttpStatus.NOT_FOUND, "MAJOR404", "해당하는 전공이 존재하지 않습니다."),
+
+    // Post
+    POST_NOT_FOUND(HttpStatus.NOT_FOUND, "POST404", "해당하는 게시글이 존재하지 않습니다.")
     ;
 
     private final HttpStatus httpStatus;

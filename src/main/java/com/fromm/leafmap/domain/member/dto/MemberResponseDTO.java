@@ -11,6 +11,15 @@ public class MemberResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
+    public static class MemberDTO {
+        private Long id;
+        private String nickname;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class MemberLoginResultDTO {
         private Long id;
         private String accessToken;

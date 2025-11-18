@@ -1,5 +1,6 @@
 package com.fromm.leafmap.domain.post.entity;
 
+import com.fromm.leafmap.domain.comment.entity.Comment;
 import com.fromm.leafmap.domain.major.entity.Major;
 import com.fromm.leafmap.domain.member.entity.Member;
 import com.fromm.leafmap.global.common.BaseEntity;
