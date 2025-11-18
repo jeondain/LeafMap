@@ -18,7 +18,7 @@ public class MajorController {
     private final MajorService majorService;
 
     @PostMapping(value = "/{majorId}/curriculumUrl", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Operation(summary = "전공 이수체계도 이미지 업로드", description = "연동 X")
+    @Operation(summary = "전공 이수체계도 이미지 업로드 (연동 X)")
     public ApiResponse<String> uploadMajorImage( @PathVariable Long majorId,
                                                  @RequestPart("image") MultipartFile image) {
         String imageUrl = majorService.uploadCurriculumUrl(majorId, image);
