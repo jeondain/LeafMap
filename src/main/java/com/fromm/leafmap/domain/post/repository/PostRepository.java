@@ -11,6 +11,8 @@ import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
+    boolean existsByMajorId(Long majorId);
+
     @Query("SELECT p FROM Post p " +
             "WHERE p.boardType = :boardType " +
             "AND p.id < :cursor " +

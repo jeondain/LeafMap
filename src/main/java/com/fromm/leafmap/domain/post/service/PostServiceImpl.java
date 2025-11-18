@@ -59,13 +59,21 @@ public class PostServiceImpl implements PostService {
 
         List<Post> posts = postRepository.findPostList(boardType, cursor, PageRequest.of(0, limit));
 
-
         List<PostResponseDTO.PostPreviewDTO> previews = posts.stream()
-                .map(post -> PostResponseDTO.PostPreviewDTO.builder()
-                        .postId(post.getId())
-                        .title(post.getTitle())
-                        .contentPreview(extractFirstLine(post.getContent()))
-                        .build())
+                .map(post -> {
+                    PostResponseDTO.PostPreviewDTO.PostPreviewDTOBuilder builder = PostResponseDTO.PostPreviewDTO.builder()
+                            .postId(post.getId())
+                            .title(post.getTitle())
+                            .contentPreview(extractFirstLine(post.getContent()));
+
+                    // MAJOR_TIPS 게시판인 경우 Major 정보 포함
+                    if (boardType == BoardType.MAJOR_TIPS && post.getMajor() != null) {
+                        builder.majorId(post.getMajor().getId())
+                               .majorName(post.getMajor().getName());
+                    }
+
+                    return builder.build();
+                })
                 .toList();
 
         Long nextCursor = posts.isEmpty() ? null : posts.get(posts.size() - 1).getId();
