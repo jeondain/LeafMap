@@ -24,7 +24,7 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping(value = "/{boardType}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Operation(summary = "게시글 작성")
+    @Operation(summary = "게시글 작성", description = "게시글 정보는 JSON 형식으로, 이미지는 Multipart(Form-Data) 형식으로 함께 전달해주세요.\n\n" )
     public ApiResponse<PostResponseDTO.AddPostResultDTO> addPost(
             @RequestPart(value = "data") PostRequestDTO.AddPostRequestDTO addPostRequestDTO,
             @PathVariable BoardType boardType,
@@ -35,4 +35,18 @@ public class PostController {
         PostResponseDTO.AddPostResultDTO addPostResultDTO = postService.addPost(boardType, addPostRequestDTO, image, member);
         return ApiResponse.onSuccess(addPostResultDTO);
     }
+
+    @GetMapping(value = "/{boardType}")
+    @Operation(summary = "게시판 목록 조회", description = "첫 페이지 조회 시 cursor 값으로 0을 전달해주세요.\n\n" +
+            "첫 페이지가 아닌 경우 이전 응답의 hasNext가 true일 때, nextCursor 값을 cursor로 전달해주세요.")
+    public ApiResponse<PostResponseDTO.PostListResultDTO> getPostList(
+            @PathVariable BoardType boardType,
+            @RequestParam(name = "cursor", defaultValue = "0") Long cursor,
+            @RequestParam(name = "limit", defaultValue = "10") int limit,
+            @CurrentMember Member member) {
+
+        PostResponseDTO.PostListResultDTO postListResultDTO = postService.getPostList(boardType, member, cursor, limit);
+        return ApiResponse.onSuccess(postListResultDTO);
+    }
+
 }

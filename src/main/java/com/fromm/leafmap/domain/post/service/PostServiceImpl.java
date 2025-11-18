@@ -8,9 +8,12 @@ import com.fromm.leafmap.domain.post.entity.Post;
 import com.fromm.leafmap.domain.post.repository.PostRepository;
 import com.fromm.leafmap.global.s3.S3Uploader;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -44,5 +47,39 @@ public class PostServiceImpl implements PostService {
         return PostResponseDTO.AddPostResultDTO.builder()
                 .id(post.getId())
                 .build();
+    }
+
+    @Override
+    @Transactional
+    public PostResponseDTO.PostListResultDTO getPostList(BoardType boardType, Member member, Long cursor, int limit) {
+
+        if (cursor == null || cursor == 0) {
+            cursor = Long.MAX_VALUE; // 첫 페이지 처리
+        }
+
+        List<Post> posts = postRepository.findPostList(boardType, cursor, PageRequest.of(0, limit));
+
+
+        List<PostResponseDTO.PostPreviewDTO> previews = posts.stream()
+                .map(post -> PostResponseDTO.PostPreviewDTO.builder()
+                        .postId(post.getId())
+                        .title(post.getTitle())
+                        .contentPreview(extractFirstLine(post.getContent()))
+                        .build())
+                .toList();
+
+        Long nextCursor = posts.isEmpty() ? null : posts.get(posts.size() - 1).getId();
+        boolean hasNext = posts.size() == limit;
+
+        return PostResponseDTO.PostListResultDTO.builder()
+                .posts(previews)
+                .nextCursor(nextCursor)
+                .hasNext(hasNext)
+                .build();
+    }
+
+    private String extractFirstLine(String content) {
+        if (content == null || content.isBlank()) return "";
+        return content.split("\n")[0];
     }
 }

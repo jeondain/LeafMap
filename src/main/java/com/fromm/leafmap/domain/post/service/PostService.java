@@ -7,5 +7,8 @@ import com.fromm.leafmap.domain.post.entity.BoardType;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface PostService {
+
     PostResponseDTO.AddPostResultDTO addPost(BoardType boardType, PostRequestDTO.AddPostRequestDTO request, MultipartFile image, Member member);
+
+    PostResponseDTO.PostListResultDTO getPostList(BoardType boardType, Member member, Long cursor, int limit);
 }

@@ -34,6 +34,7 @@ public class Post extends BaseEntity {
 
     private String imageUrl;
 
+    @Column(name = "is_public")
     private Boolean isPublic;
 
     @Column(name = "like_count")
