@@ -8,6 +8,7 @@ import com.fromm.leafmap.domain.post.dto.PostRequestDTO;
 import com.fromm.leafmap.domain.post.dto.PostResponseDTO;
 import com.fromm.leafmap.domain.post.entity.BoardType;
 import com.fromm.leafmap.domain.post.entity.Post;
+import com.fromm.leafmap.domain.post.repository.PostLikeRepository;
 import com.fromm.leafmap.domain.post.repository.PostRepository;
 import com.fromm.leafmap.global.apiPayload.code.status.ErrorStatus;
 import com.fromm.leafmap.global.apiPayload.exception.handler.ErrorHandler;
@@ -25,6 +26,7 @@ import java.util.List;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
+    private final PostLikeRepository postLikeRepository;
     private final S3Uploader s3Uploader;
 
     @Override
@@ -50,7 +52,7 @@ public class PostServiceImpl implements PostService {
 
         postRepository.save(post);
         return PostResponseDTO.AddPostResultDTO.builder()
-                .id(post.getId())
+                .postId(post.getId())
                 .build();
     }
 
@@ -67,7 +69,7 @@ public class PostServiceImpl implements PostService {
         List<PostResponseDTO.PostPreviewDTO> previews = posts.stream()
                 .map(post -> {
                     PostResponseDTO.PostPreviewDTO.PostPreviewDTOBuilder builder = PostResponseDTO.PostPreviewDTO.builder()
-                            .id(post.getId())
+                            .postId(post.getId())
                             .title(post.getTitle())
                             .contentPreview(extractFirstLine(post.getContent()));
 
@@ -105,6 +107,10 @@ public class PostServiceImpl implements PostService {
         // 게시글 작성자 여부
         boolean isPostWriter = member != null && post.getMember() != null
                 && member.getId().equals(post.getMember().getId());
+
+        // 게시글 좋아요 여부
+        boolean isLiked = member != null
+                && postLikeRepository.existsByPostIdAndMemberId(postId, member.getId());
 
         // CommentDTO
         List<CommentResponseDTO.CommentDTO> commentDTOs = post.getComments().stream()
@@ -145,7 +151,7 @@ public class PostServiceImpl implements PostService {
         }
 
         return PostResponseDTO.PostDetailResultDTO.builder()
-                .id(post.getId())
+                .postId(post.getId())
                 .boardType(post.getBoardType())
                 .title(post.getTitle())
                 .content(post.getContent())
@@ -156,6 +162,7 @@ public class PostServiceImpl implements PostService {
                 .badge(post.getBadge())
                 .createdAt(post.getCreatedAt())
                 .isWriter(isPostWriter)
+                .isLiked(isLiked)
                 .member(memberDTO)
                 .major(majorDTO)
                 .comments(commentDTOs)
