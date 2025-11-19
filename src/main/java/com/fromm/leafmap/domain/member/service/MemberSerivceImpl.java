@@ -154,6 +154,38 @@ public class MemberSerivceImpl implements MemberService {
                 .build();
     }
 
+    @Override
+    @Transactional
+    public PostResponseDTO.PostListResultDTO getPostsLikedByMember(Member member, Long cursor, int limit) {
+
+        if (cursor == null || cursor == 0) {
+            cursor = Long.MAX_VALUE; // 첫 페이지 처리
+        }
+
+        List<Post> posts = postRepository.findPostsLikedByMember(member.getId(), cursor, PageRequest.of(0, limit));
+
+        List<PostResponseDTO.PostPreviewDTO> previews = posts.stream()
+                .map(post -> {
+                    PostResponseDTO.PostPreviewDTO.PostPreviewDTOBuilder builder = PostResponseDTO.PostPreviewDTO.builder()
+                            .postId(post.getId())
+                            .title(post.getTitle())
+                            .contentPreview(extractFirstLine(post.getContent()))
+                            .boardType(post.getBoardType());
+
+                    return builder.build();
+                })
+                .toList();
+
+        Long nextCursor = posts.isEmpty() ? null : posts.get(posts.size() - 1).getId();
+        boolean hasNext = posts.size() == limit;
+
+        return PostResponseDTO.PostListResultDTO.builder()
+                .posts(previews)
+                .nextCursor(nextCursor)
+                .hasNext(hasNext)
+                .build();
+    }
+
     private String extractFirstLine(String content) {
         if (content == null || content.isBlank()) return "";
         return content.split("\n")[0];

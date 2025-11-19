@@ -30,4 +30,11 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "AND p.id < :cursor " +
             "ORDER BY p.id DESC")
     List<Post> findMyPostList(@Param("memberId") Long memberId, @Param("cursor") Long cursor, Pageable pageable);
+
+    @Query("SELECT p FROM Post p " +
+            "JOIN PostLike pl ON pl.post = p " +
+            "WHERE pl.member.id = :memberId " +
+            "AND p.id < :cursor " +
+            "ORDER BY p.id DESC")
+    List<Post> findPostsLikedByMember(@Param("memberId") Long memberId, @Param("cursor") Long cursor, Pageable pageable);
 }

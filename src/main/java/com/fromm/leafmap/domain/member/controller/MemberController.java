@@ -64,4 +64,15 @@ public class MemberController {
         PostResponseDTO.PostListResultDTO postListResultDTO = memberService.getMemberPosts(member, cursor, limit);
         return ApiResponse.onSuccess(postListResultDTO);
     }
+
+    @GetMapping("/member/liked-posts")
+    @Operation(summary = "내가 추천한 글 조회")
+    public ApiResponse<PostResponseDTO.PostListResultDTO> getPostsLikedByMember(
+            @CurrentMember Member member,
+            @RequestParam(name = "cursor", defaultValue = "0") Long cursor,
+            @RequestParam(name = "limit", defaultValue = "10") int limit) {
+
+        PostResponseDTO.PostListResultDTO postListResultDTO = memberService.getPostsLikedByMember(member, cursor, limit);
+        return ApiResponse.onSuccess(postListResultDTO);
+    }
 }

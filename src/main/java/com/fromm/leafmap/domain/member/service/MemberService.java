@@ -16,4 +16,6 @@ public interface MemberService {
     MemberResponseDTO.GetMemberInfoResultDTO updateMemberInfo(MemberRequestDTO.UpdateMemberInfoDTO request, Member member);
 
     PostResponseDTO.PostListResultDTO getMemberPosts(Member member, Long cursor, int limit);
+
+    PostResponseDTO.PostListResultDTO getPostsLikedByMember(Member member, Long cursor, int limit);
 }
