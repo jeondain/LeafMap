@@ -20,7 +20,7 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping
-    @Operation(summary = "댓글 작성")
+    @Operation(summary = "댓글 작성", description = "상위 댓글이 있을 경우 parentId로 전달해주세요.")
     public ApiResponse<CommentResponseDTO.AddCommentResultDTO> addComment(
             @PathVariable Long postId,
             @RequestBody CommentRequestDTO.AddCommentDTO addCommentDTO,
