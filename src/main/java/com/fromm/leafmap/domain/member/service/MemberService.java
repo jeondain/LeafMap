@@ -9,4 +9,6 @@ public interface MemberService {
     public Member signup(MemberRequestDTO.MemberSignupDTO memberSignupDto);
 
     public MemberResponseDTO.MemberLoginResultDTO login(MemberRequestDTO.MemberLoginDTO memberLoginDto);
+
+    public MemberResponseDTO.GetMemberInfoResultDTO getMemberInfo(Member member);
 }

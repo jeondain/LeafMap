@@ -152,7 +152,7 @@ public class PostServiceImpl implements PostService {
         MemberResponseDTO.MemberDTO memberDTO = null;
         if (post.getMember() != null) {
             memberDTO = MemberResponseDTO.MemberDTO.builder()
-                    .id(post.getMember().getId())
+                    .memberId(post.getMember().getId())
                     .nickname(post.getMember().getNickname())
                     .build();
         }

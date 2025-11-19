@@ -13,6 +13,7 @@ import com.fromm.leafmap.global.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -26,6 +27,7 @@ public class MemberSerivceImpl implements MemberService {
     private final JwtService jwtService;
 
     @Override
+    @Transactional
     public Member signup(MemberRequestDTO.MemberSignupDTO memberSignupDto) {
         Optional<Member> optionalMember = memberRepository.findByLoginId(memberSignupDto.getLoginId());
 
@@ -55,6 +57,7 @@ public class MemberSerivceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public MemberResponseDTO.MemberLoginResultDTO login(MemberRequestDTO.MemberLoginDTO memberLoginDto) {
         Member member = memberRepository.findByLoginId(memberLoginDto.getLoginId())
                 .orElseThrow(() -> new ErrorHandler(ErrorStatus.MEMBER_NOT_FOUND));
@@ -66,8 +69,19 @@ public class MemberSerivceImpl implements MemberService {
         String accessToken = jwtService.createAccessToken(member.getLoginId());
 
         return MemberResponseDTO.MemberLoginResultDTO.builder()
-                .id(member.getId())
+                .memberId(member.getId())
                 .accessToken(accessToken)
+                .build();
+    }
+
+    @Override
+    @Transactional
+    public MemberResponseDTO.GetMemberInfoResultDTO getMemberInfo(Member member) {
+        return MemberResponseDTO.GetMemberInfoResultDTO.builder()
+                .memberId(member.getId())
+                .nickname(member.getNickname())
+                .major(member.getMajor() != null ? member.getMajor().getName() : null)
+                .desiredMajor(member.getDesiredMajor() != null ? member.getDesiredMajor().getName() : null)
                 .build();
     }
 }
