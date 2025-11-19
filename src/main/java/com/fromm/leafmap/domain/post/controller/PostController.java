@@ -21,7 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/posts")
+@RequestMapping("/api/boards")
 public class PostController {
 
     private final PostService postService;
@@ -35,7 +35,7 @@ public class PostController {
         return ApiResponse.onSuccess("Majortips 게시글 생성 완료");
     }
 
-    @PostMapping(value = "/{boardType}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/{boardType}/posts", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "게시글 작성", description = "게시글 정보는 JSON 형식으로, 이미지는 Multipart(Form-Data) 형식으로 함께 전달해주세요.\n\n" )
     public ApiResponse<PostResponseDTO.AddPostResultDTO> addPost(
             @RequestPart(value = "data") PostRequestDTO.AddPostRequestDTO addPostRequestDTO,
@@ -48,7 +48,7 @@ public class PostController {
         return ApiResponse.onSuccess(addPostResultDTO);
     }
 
-    @GetMapping(value = "/{boardType}")
+    @GetMapping(value = "/{boardType}/posts")
     @Operation(summary = "게시판 목록 조회", description = "첫 페이지 조회 시 cursor 값으로 0을 전달해주세요.\n\n" +
             "첫 페이지가 아닌 경우 이전 응답의 hasNext가 true일 때, nextCursor 값을 cursor로 전달해주세요.")
     public ApiResponse<PostResponseDTO.PostListResultDTO> getPostList(
@@ -61,7 +61,7 @@ public class PostController {
         return ApiResponse.onSuccess(postListResultDTO);
     }
 
-    @GetMapping(value = "/{boardType}/{postId}")
+    @GetMapping(value = "/{boardType}/posts/{postId}")
     @Operation(summary = "게시판 상세 조회")
     public ApiResponse<PostResponseDTO.PostDetailResultDTO> getPostDetail(
             @PathVariable BoardType boardType,
@@ -72,7 +72,7 @@ public class PostController {
         return ApiResponse.onSuccess(postDetailResultDTO);
     }
 
-    @PostMapping(value ="/{boardType}/{postId}/like")
+    @PostMapping(value ="/{boardType}/posts/{postId}/like")
     @Operation(summary = "게시글 추천 토글", description = "추천하지 않은 상태라면 추천이 추가되고, 이미 추천한 상태라면 추천이 취소됩니다.")
     public ApiResponse<PostLikeResponseDTO.PostLikeResultDTO> toggleLike(
             @PathVariable BoardType boardType,

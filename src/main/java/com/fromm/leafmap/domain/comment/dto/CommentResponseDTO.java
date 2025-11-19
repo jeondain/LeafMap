@@ -14,10 +14,19 @@ public class CommentResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class CommentDTO {
-        private Long id;
+        private Long commentId;
+        private Long parentId;
         private String content;
         private String nickname;
         private Boolean isWriter;
         private LocalDateTime createdAt;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AddCommentResultDTO {
+        private Long commentId;
     }
 }
