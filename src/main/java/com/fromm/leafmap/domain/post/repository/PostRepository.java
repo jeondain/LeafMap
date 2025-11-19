@@ -16,7 +16,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     Optional<Post> findByIdAndBoardType(Long id, BoardType boardType);
 
-    List<Post> findTop10ByBoardTypeOrderByCreatedAtDesc(BoardType boardType);
+    List<Post> findTop10ByBoardTypeAndIsPublicTrueOrderByCreatedAtDesc(BoardType boardType);
 
     @Query("SELECT p FROM Post p " +
             "WHERE p.boardType = :boardType " +
