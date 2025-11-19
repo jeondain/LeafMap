@@ -31,4 +31,14 @@ public class MemberRequestDTO {
         private String loginId;
         private String password;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdateMemberInfoDTO {
+        private String nickname;
+        private String major;
+        private String desiredMajor;
+    }
 }

@@ -33,7 +33,7 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public PostResponseDTO.RestaurantPostListResultDTO getRestaurantPostList(Member member) {
-        List<Post> posts = postRepository.findTop10ByBoardTypeOrderByCreatedAtDesc(BoardType.RESTAURANT);
+        List<Post> posts = postRepository.findTop10ByBoardTypeAndIsPublicTrueOrderByCreatedAtDesc(BoardType.RESTAURANT);
 
         List<PostResponseDTO.RestaurantPostPreviewDTO> previewList = posts.stream()
                 .map(post -> PostResponseDTO.RestaurantPostPreviewDTO.builder()
@@ -152,7 +152,7 @@ public class PostServiceImpl implements PostService {
         MemberResponseDTO.MemberDTO memberDTO = null;
         if (post.getMember() != null) {
             memberDTO = MemberResponseDTO.MemberDTO.builder()
-                    .id(post.getMember().getId())
+                    .memberId(post.getMember().getId())
                     .nickname(post.getMember().getNickname())
                     .build();
         }

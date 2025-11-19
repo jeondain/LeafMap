@@ -6,7 +6,11 @@ import com.fromm.leafmap.domain.member.entity.Member;
 
 public interface MemberService {
 
-    public Member signup(MemberRequestDTO.MemberSignupDTO memberSignupDto);
+    Member signup(MemberRequestDTO.MemberSignupDTO memberSignupDto);
 
-    public MemberResponseDTO.MemberLoginResultDTO login(MemberRequestDTO.MemberLoginDTO memberLoginDto);
+    MemberResponseDTO.MemberLoginResultDTO login(MemberRequestDTO.MemberLoginDTO memberLoginDto);
+
+    MemberResponseDTO.GetMemberInfoResultDTO getMemberInfo(Member member);
+
+    MemberResponseDTO.GetMemberInfoResultDTO updateMemberInfo(MemberRequestDTO.UpdateMemberInfoDTO request, Member member);
 }

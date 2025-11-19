@@ -12,7 +12,7 @@ public class MemberResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class MemberDTO {
-        private Long id;
+        private Long memberId;
         private String nickname;
     }
 
@@ -21,7 +21,18 @@ public class MemberResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class MemberLoginResultDTO {
-        private Long id;
+        private Long memberId;
         private String accessToken;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GetMemberInfoResultDTO {
+        private Long memberId;
+        private String nickname;
+        private String major;
+        private String desiredMajor;
     }
 }
