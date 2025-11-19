@@ -28,6 +28,8 @@ public class PostResponseDTO {
 
         private Long majorId;
         private String majorName;
+
+        private BoardType boardType;
     }
 
     @Getter

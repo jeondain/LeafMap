@@ -3,6 +3,7 @@ package com.fromm.leafmap.domain.member.service;
 import com.fromm.leafmap.domain.member.dto.MemberRequestDTO;
 import com.fromm.leafmap.domain.member.dto.MemberResponseDTO;
 import com.fromm.leafmap.domain.member.entity.Member;
+import com.fromm.leafmap.domain.post.dto.PostResponseDTO;
 
 public interface MemberService {
 
@@ -13,4 +14,6 @@ public interface MemberService {
     MemberResponseDTO.GetMemberInfoResultDTO getMemberInfo(Member member);
 
     MemberResponseDTO.GetMemberInfoResultDTO updateMemberInfo(MemberRequestDTO.UpdateMemberInfoDTO request, Member member);
+
+    PostResponseDTO.PostListResultDTO getMemberPosts(Member member, Long cursor, int limit);
 }

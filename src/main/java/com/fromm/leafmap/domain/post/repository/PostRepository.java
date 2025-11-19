@@ -24,4 +24,10 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "AND p.isPublic = true " +
             "ORDER BY p.id DESC")
     List<Post> findPostList(@Param("boardType") BoardType boardType, @Param("cursor") Long cursor, Pageable pageable);
+
+    @Query("SELECT p FROM Post p " +
+            "WHERE p.member.id = :memberId " +
+            "AND p.id < :cursor " +
+            "ORDER BY p.id DESC")
+    List<Post> findMyPostList(@Param("memberId") Long memberId, @Param("cursor") Long cursor, Pageable pageable);
 }
