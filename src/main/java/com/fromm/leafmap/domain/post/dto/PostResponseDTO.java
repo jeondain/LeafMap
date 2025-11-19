@@ -25,6 +25,7 @@ public class PostResponseDTO {
         private Long postId;
         private String title;
         private String contentPreview; // 내용 첫 줄
+        private Boolean isPublic;
 
         private Long majorId;
         private String majorName;

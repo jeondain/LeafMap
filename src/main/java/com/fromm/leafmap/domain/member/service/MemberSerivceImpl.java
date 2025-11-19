@@ -168,6 +168,7 @@ public class MemberSerivceImpl implements MemberService {
                         .postId(post.getId())
                         .title(post.getTitle())
                         .contentPreview(extractFirstLine(post.getContent()))
+                        .isPublic(post.getIsPublic())
                         .boardType(post.getBoardType())
                         .build())
                 .toList();
