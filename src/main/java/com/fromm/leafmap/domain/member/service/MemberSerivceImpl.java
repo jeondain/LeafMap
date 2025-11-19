@@ -7,14 +7,19 @@ import com.fromm.leafmap.domain.member.dto.MemberResponseDTO;
 import com.fromm.leafmap.domain.member.entity.Member;
 import com.fromm.leafmap.domain.member.entity.Role;
 import com.fromm.leafmap.domain.member.repository.MemberRepository;
+import com.fromm.leafmap.domain.post.dto.PostResponseDTO;
+import com.fromm.leafmap.domain.post.entity.Post;
+import com.fromm.leafmap.domain.post.repository.PostRepository;
 import com.fromm.leafmap.global.apiPayload.code.status.ErrorStatus;
 import com.fromm.leafmap.global.apiPayload.exception.handler.ErrorHandler;
 import com.fromm.leafmap.global.security.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,6 +28,7 @@ public class MemberSerivceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final MajorRepository majorRepository;
+    private final PostRepository postRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
@@ -114,5 +120,70 @@ public class MemberSerivceImpl implements MemberService {
                 .major(member.getMajor() != null ? member.getMajor().getName() : null)
                 .desiredMajor(member.getDesiredMajor() != null ? member.getDesiredMajor().getName() : null)
                 .build();
+    }
+
+    @Override
+    @Transactional
+    public PostResponseDTO.PostListResultDTO getMemberPosts(Member member, Long cursor, int limit) {
+
+        if (cursor == null || cursor == 0) {
+            cursor = Long.MAX_VALUE; // 첫 페이지 처리
+        }
+
+        List<Post> posts = postRepository.findMyPostList(member.getId(), cursor, PageRequest.of(0, limit));
+
+        return buildPostListResultDTO(posts, limit);
+    }
+
+    @Override
+    @Transactional
+    public PostResponseDTO.PostListResultDTO getPostsLikedByMember(Member member, Long cursor, int limit) {
+
+        if (cursor == null || cursor == 0) {
+            cursor = Long.MAX_VALUE; // 첫 페이지 처리
+        }
+
+        List<Post> posts = postRepository.findPostsLikedByMember(member.getId(), cursor, PageRequest.of(0, limit));
+
+        return buildPostListResultDTO(posts, limit);
+    }
+
+    @Override
+    @Transactional
+    public PostResponseDTO.PostListResultDTO getPostsCommentedByMember(Member member, Long cursor, int limit) {
+
+        if (cursor == null || cursor == 0) {
+            cursor = Long.MAX_VALUE; // 첫 페이지 처리
+        }
+
+        List<Post> posts = postRepository.findPostsCommentedByMember(member.getId(), cursor, PageRequest.of(0, limit));
+
+        return buildPostListResultDTO(posts, limit);
+    }
+
+    private PostResponseDTO.PostListResultDTO buildPostListResultDTO(List<Post> posts, int limit) {
+
+        List<PostResponseDTO.PostPreviewDTO> previews = posts.stream()
+                .map(post -> PostResponseDTO.PostPreviewDTO.builder()
+                        .postId(post.getId())
+                        .title(post.getTitle())
+                        .contentPreview(extractFirstLine(post.getContent()))
+                        .boardType(post.getBoardType())
+                        .build())
+                .toList();
+
+        Long nextCursor = posts.isEmpty() ? null : posts.get(posts.size() - 1).getId();
+        boolean hasNext = posts.size() == limit;
+
+        return PostResponseDTO.PostListResultDTO.builder()
+                .posts(previews)
+                .nextCursor(nextCursor)
+                .hasNext(hasNext)
+                .build();
+    }
+
+    private String extractFirstLine(String content) {
+        if (content == null || content.isBlank()) return "";
+        return content.split("\n")[0];
     }
 }
