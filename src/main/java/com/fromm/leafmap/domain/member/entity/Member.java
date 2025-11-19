@@ -25,6 +25,9 @@ public class Member extends BaseEntity {
 
     private String studentId;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "major_id")
     private Major major;

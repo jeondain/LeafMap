@@ -41,7 +41,7 @@ public class SecurityConfig {
                                 "/api/signup",
                                 "/api/login",
                                 "/api/majors/**",
-                                "api/posts/MAJOR_TIPS/init"
+                                "/api/boards/MAJOR_TIPS/init"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

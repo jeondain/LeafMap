@@ -13,4 +13,6 @@ public interface PostService {
     PostResponseDTO.PostListResultDTO getPostList(BoardType boardType, Member member, Long cursor, int limit);
 
     PostResponseDTO.PostDetailResultDTO getPostDetail(BoardType boardType, Long postId, Member member);
+
+    void approvePost(BoardType boardType, Long postId, Member member);
 }
