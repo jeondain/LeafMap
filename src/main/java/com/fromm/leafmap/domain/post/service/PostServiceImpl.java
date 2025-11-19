@@ -32,6 +32,24 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
+    public PostResponseDTO.RestaurantPostListResultDTO getRestaurantPostList(Member member) {
+        List<Post> posts = postRepository.findTop10ByBoardTypeOrderByCreatedAtDesc(BoardType.RESTAURANT);
+
+        List<PostResponseDTO.RestaurantPostPreviewDTO> previewList = posts.stream()
+                .map(post -> PostResponseDTO.RestaurantPostPreviewDTO.builder()
+                        .postId(post.getId())
+                        .imageUrl(post.getImageUrl())
+                        .build())
+                .toList();
+
+
+        return PostResponseDTO.RestaurantPostListResultDTO.builder()
+                .posts(previewList)
+                .build();
+    }
+
+    @Override
+    @Transactional
     public PostResponseDTO.AddPostResultDTO addPost(BoardType boardType, PostRequestDTO.AddPostRequestDTO request, MultipartFile image, Member member) {
 
         String imageUrl = null;

@@ -62,4 +62,21 @@ public class PostResponseDTO {
 
         private List<CommentResponseDTO.CommentDTO> comments;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class RestaurantPostPreviewDTO {
+        private Long postId;
+        private String imageUrl;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class RestaurantPostListResultDTO {
+        private List<RestaurantPostPreviewDTO> posts;
+    }
 }

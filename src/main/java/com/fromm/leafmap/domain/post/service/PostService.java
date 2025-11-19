@@ -8,6 +8,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface PostService {
 
+    PostResponseDTO.RestaurantPostListResultDTO getRestaurantPostList(Member member);
+
     PostResponseDTO.AddPostResultDTO addPost(BoardType boardType, PostRequestDTO.AddPostRequestDTO request, MultipartFile image, Member member);
 
     PostResponseDTO.PostListResultDTO getPostList(BoardType boardType, Member member, Long cursor, int limit);
