@@ -37,4 +37,10 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "AND p.id < :cursor " +
             "ORDER BY p.id DESC")
     List<Post> findPostsLikedByMember(@Param("memberId") Long memberId, @Param("cursor") Long cursor, Pageable pageable);
+
+    @Query("SELECT DISTINCT c.post FROM Comment c " +
+            "WHERE c.member.id = :memberId " +
+            "AND c.post.id < :cursor " +
+            "ORDER BY c.post.id DESC")
+    List<Post> findPostsCommentedByMember(@Param("memberId") Long memberId, @Param("cursor") Long cursor, Pageable pageable);
 }

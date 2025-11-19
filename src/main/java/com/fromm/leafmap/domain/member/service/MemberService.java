@@ -18,4 +18,6 @@ public interface MemberService {
     PostResponseDTO.PostListResultDTO getMemberPosts(Member member, Long cursor, int limit);
 
     PostResponseDTO.PostListResultDTO getPostsLikedByMember(Member member, Long cursor, int limit);
+
+    PostResponseDTO.PostListResultDTO getPostsCommentedByMember(Member member, Long cursor, int limit);
 }
