@@ -5,6 +5,7 @@ import com.fromm.leafmap.domain.major.repository.MajorRepository;
 import com.fromm.leafmap.domain.member.dto.MemberRequestDTO;
 import com.fromm.leafmap.domain.member.dto.MemberResponseDTO;
 import com.fromm.leafmap.domain.member.entity.Member;
+import com.fromm.leafmap.domain.member.entity.Role;
 import com.fromm.leafmap.domain.member.repository.MemberRepository;
 import com.fromm.leafmap.global.apiPayload.code.status.ErrorStatus;
 import com.fromm.leafmap.global.apiPayload.exception.handler.ErrorHandler;
@@ -47,6 +48,7 @@ public class MemberSerivceImpl implements MemberService {
                 .studentId(memberSignupDto.getStudentId())
                 .major(major)
                 .desiredMajor(desiredMajor)
+                .role(Role.USER)
                 .build();
 
         return memberRepository.save(member);

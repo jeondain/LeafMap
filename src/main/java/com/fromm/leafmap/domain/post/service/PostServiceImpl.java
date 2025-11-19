@@ -4,6 +4,7 @@ import com.fromm.leafmap.domain.comment.dto.CommentResponseDTO;
 import com.fromm.leafmap.domain.major.dto.MajorResponseDTO;
 import com.fromm.leafmap.domain.member.dto.MemberResponseDTO;
 import com.fromm.leafmap.domain.member.entity.Member;
+import com.fromm.leafmap.domain.member.entity.Role;
 import com.fromm.leafmap.domain.post.dto.PostRequestDTO;
 import com.fromm.leafmap.domain.post.dto.PostResponseDTO;
 import com.fromm.leafmap.domain.post.entity.BoardType;
@@ -168,5 +169,18 @@ public class PostServiceImpl implements PostService {
                 .major(majorDTO)
                 .comments(commentDTOs)
                 .build();
+    }
+
+    @Override
+    @Transactional
+    public void approvePost(BoardType boardType, Long postId, Member member) {
+        if (member.getRole() != Role.ADMIN) {
+            throw new ErrorHandler(ErrorStatus._FORBIDDEN);
+        }
+
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new ErrorHandler(ErrorStatus.POST_NOT_FOUND));
+
+        post.setIsPublic(true);
     }
 }

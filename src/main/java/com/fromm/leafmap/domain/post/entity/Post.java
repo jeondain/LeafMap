@@ -59,6 +59,10 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "major_id")
     private Major major;
 
+    public void setIsPublic(Boolean aPublic) {
+        isPublic = aPublic;
+    }
+
     public void increaseLike() {
         if (this.likeCount == null) {
             this.likeCount = 0;

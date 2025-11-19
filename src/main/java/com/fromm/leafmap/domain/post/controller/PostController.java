@@ -82,4 +82,15 @@ public class PostController {
         PostLikeResponseDTO.PostLikeResultDTO postLikeResultDTO = postLikeService.toggleLike(boardType, postId, member);
         return ApiResponse.onSuccess(postLikeResultDTO);
     }
+
+    @PatchMapping(value ="/{boardType}/posts/{postId}/publish")
+    @Operation(summary = "게시글 공개 승인")
+    public ApiResponse<String> approvePost(
+            @PathVariable BoardType boardType,
+            @PathVariable Long postId,
+            @CurrentMember Member member) {
+
+        postService.approvePost(boardType, postId, member);
+        return ApiResponse.onSuccess("게시글 공개 승인 완료");
+    }
 }
