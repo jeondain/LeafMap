@@ -84,4 +84,35 @@ public class MemberSerivceImpl implements MemberService {
                 .desiredMajor(member.getDesiredMajor() != null ? member.getDesiredMajor().getName() : null)
                 .build();
     }
+
+    @Override
+    @Transactional
+    public MemberResponseDTO.GetMemberInfoResultDTO updateMemberInfo( MemberRequestDTO.UpdateMemberInfoDTO request, Member member) {
+        // 닉네임 업데이트
+        if (request.getNickname() != null) {
+            member.setNickname(request.getNickname());
+        }
+
+        // 전공 업데이트
+        if (request.getMajor() != null) {
+            Major major = majorRepository.findByName(request.getMajor())
+                    .orElseThrow(() -> new ErrorHandler(ErrorStatus.MAJOR_NOT_FOUND));
+            member.setMajor(major);
+        }
+
+        // 희망 전공 업데이트
+        if (request.getDesiredMajor() != null) {
+            Major desiredMajor = majorRepository.findByName(request.getDesiredMajor())
+                    .orElseThrow(() -> new ErrorHandler(ErrorStatus.MAJOR_NOT_FOUND));
+            member.setDesiredMajor(desiredMajor);
+        }
+
+        memberRepository.save(member);
+        return MemberResponseDTO.GetMemberInfoResultDTO.builder()
+                .memberId(member.getId())
+                .nickname(member.getNickname())
+                .major(member.getMajor() != null ? member.getMajor().getName() : null)
+                .desiredMajor(member.getDesiredMajor() != null ? member.getDesiredMajor().getName() : null)
+                .build();
+    }
 }

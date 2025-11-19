@@ -42,4 +42,14 @@ public class MemberController {
         MemberResponseDTO.GetMemberInfoResultDTO getMemberInfoResultDTO = memberService.getMemberInfo(member);
         return ApiResponse.onSuccess(getMemberInfoResultDTO);
     }
+
+    @PatchMapping("/member")
+    @Operation(summary = "회원 정보 수정")
+    public ApiResponse<MemberResponseDTO.GetMemberInfoResultDTO> updateMemberInfo(
+            @RequestBody MemberRequestDTO.UpdateMemberInfoDTO updateMemberInfoDTO,
+            @CurrentMember Member member) {
+
+        MemberResponseDTO.GetMemberInfoResultDTO getMemberInfoResultDTO = memberService.updateMemberInfo(updateMemberInfoDTO, member);
+        return ApiResponse.onSuccess(getMemberInfoResultDTO);
+    }
 }
