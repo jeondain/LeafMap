@@ -119,7 +119,8 @@ public class PostServiceImpl implements PostService {
                             && member.getId().equals(c.getMember().getId());
 
                     return CommentResponseDTO.CommentDTO.builder()
-                            .id(c.getId())
+                            .commentId(c.getId())
+                            .parentId(c.getParent() != null ? c.getParent().getId() : null)
                             .content(c.getContent())
                             .nickname(c.getMember().getNickname())
                             .isWriter(isCommentWriter)

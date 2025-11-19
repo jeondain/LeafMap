@@ -25,7 +25,11 @@ public enum ErrorStatus implements BaseErrorCode {
     MAJOR_NOT_FOUND(HttpStatus.NOT_FOUND, "MAJOR404", "해당하는 전공이 존재하지 않습니다."),
 
     // Post
-    POST_NOT_FOUND(HttpStatus.NOT_FOUND, "POST404", "해당하는 게시글이 존재하지 않습니다.")
+    POST_NOT_FOUND(HttpStatus.NOT_FOUND, "POST404", "해당하는 게시글이 존재하지 않습니다."),
+
+    // Comment
+    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "COMMENT404", "해당하는 댓글이 존재하지 않습니다."),
+    INVALID_COMMENT_PARENT(HttpStatus.BAD_REQUEST, "COMMENT400", "부모 댓글이 해당 게시글에 속하지 않습니다.");
     ;
 
     private final HttpStatus httpStatus;
