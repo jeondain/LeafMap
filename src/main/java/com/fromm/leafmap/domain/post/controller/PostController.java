@@ -35,6 +35,15 @@ public class PostController {
         return ApiResponse.onSuccess("Majortips 게시글 생성 완료");
     }
 
+    @GetMapping(value = "/RESTAURANT/home")
+    @Operation(summary = "홈 화면 - 맛집 게시판 사진 조회")
+    public ApiResponse<PostResponseDTO.RestaurantPostListResultDTO> getRestaurantPostList(
+            @CurrentMember Member member) {
+
+        PostResponseDTO.RestaurantPostListResultDTO postListResultDTO = postService.getRestaurantPostList(member);
+        return ApiResponse.onSuccess(postListResultDTO);
+    }
+
     @PostMapping(value = "/{boardType}/posts", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "게시글 작성", description = "게시글 정보는 JSON 형식으로, 이미지는 Multipart(Form-Data) 형식으로 함께 전달해주세요.\n\n" )
     public ApiResponse<PostResponseDTO.AddPostResultDTO> addPost(
