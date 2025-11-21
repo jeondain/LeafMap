@@ -19,7 +19,7 @@ public class CommentResponseDTO {
         private String content;
         private String nickname;
         private Boolean isWriter;
-        private LocalDateTime createdAt;
+        private String authorInfo;
     }
 
     @Builder

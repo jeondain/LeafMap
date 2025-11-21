@@ -31,6 +31,8 @@ public class PostResponseDTO {
         private String majorName;
 
         private BoardType boardType;
+
+        private String authorInfo;
     }
 
     @Getter
@@ -58,7 +60,7 @@ public class PostResponseDTO {
         private Boolean badge;
         private Boolean isWriter;
         private Boolean isLiked;
-        private LocalDateTime createdAt;
+        private String authorInfo;
 
         private MemberResponseDTO.MemberDTO member;
         private MajorResponseDTO.MajorDTO major;
