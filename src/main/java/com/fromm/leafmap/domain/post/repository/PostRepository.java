@@ -43,4 +43,25 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "AND c.post.id < :cursor " +
             "ORDER BY c.post.id DESC")
     List<Post> findPostsCommentedByMember(@Param("memberId") Long memberId, @Param("cursor") Long cursor, Pageable pageable);
+
+    @Query(value =
+            "SELECT * FROM post p " +
+                    "WHERE p.is_public = true " +
+                    "AND (:boardType IS NULL OR p.board_type = :boardType) " +
+                    "AND (:address IS NULL OR " +
+                    "     p.address LIKE CONCAT('%', :address, '%') OR " +
+                    "     p.title LIKE CONCAT('%', :address, '%') OR " +
+                    "     p.content LIKE CONCAT('%', :address, '%')) " +
+                    "AND (:hasBadge IS NULL OR p.badge IS NOT NULL) " +
+                    "AND (:keyword IS NULL OR " +
+                    "     p.title REGEXP REPLACE(:keyword, ' ', '|') OR " +
+                    "     p.content REGEXP REPLACE(:keyword, ' ', '|')) " +
+                    "ORDER BY p.created_at DESC",
+            nativeQuery = true)
+    List<Post> searchPostsByCondition(
+            @Param("boardType") String boardType,
+            @Param("address") String address,
+            @Param("hasBadge") Boolean hasBadge,
+            @Param("keyword") String keyword
+    );
 }
