@@ -52,6 +52,9 @@ dependencies {
     // AWS S3 SDK
     implementation platform('software.amazon.awssdk:bom:2.20.0')
     implementation 'software.amazon.awssdk:s3'
+
+    // JSON 처리
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
 }
 
 tasks.named('test') {
