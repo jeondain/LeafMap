@@ -52,7 +52,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                     "     p.address LIKE CONCAT('%', :address, '%') OR " +
                     "     p.title LIKE CONCAT('%', :address, '%') OR " +
                     "     p.content LIKE CONCAT('%', :address, '%')) " +
-                    "AND (:hasBadge IS NULL OR p.badge IS NOT NULL) " +
+                    "AND (:hasBadge IS NULL OR p.badge = :hasBadge) " +
                     "AND (:keyword IS NULL OR " +
                     "     p.title REGEXP REPLACE(:keyword, ' ', '|') OR " +
                     "     p.content REGEXP REPLACE(:keyword, ' ', '|')) " +
