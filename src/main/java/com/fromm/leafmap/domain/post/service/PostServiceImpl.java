@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -90,7 +91,9 @@ public class PostServiceImpl implements PostService {
                     PostResponseDTO.PostPreviewDTO.PostPreviewDTOBuilder builder = PostResponseDTO.PostPreviewDTO.builder()
                             .postId(post.getId())
                             .title(post.getTitle())
-                            .contentPreview(extractFirstLine(post.getContent()));
+                            .contentPreview(extractFirstLine(post.getContent()))
+                            .authorInfo((post.getMember() != null ? post.getMember().getNickname() : "익명") + " | " +
+                                    post.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
                     // MAJOR_TIPS 게시판인 경우 Major 정보 포함
                     if (boardType == BoardType.MAJOR_TIPS && post.getMajor() != null) {
@@ -143,7 +146,8 @@ public class PostServiceImpl implements PostService {
                             .content(c.getContent())
                             .nickname(c.getMember().getNickname())
                             .isWriter(isCommentWriter)
-                            .createdAt(c.getCreatedAt())
+                            .authorInfo(c.getMember().getNickname() + " | " +
+                                    c.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                             .build();
                 })
                 .toList();
@@ -180,8 +184,8 @@ public class PostServiceImpl implements PostService {
                 .isPublic(post.getIsPublic())
                 .likeCount(post.getLikeCount())
                 .badge(post.getBadge())
-                .createdAt(post.getCreatedAt())
-                .isWriter(isPostWriter)
+                .authorInfo((post.getMember() != null ? post.getMember().getNickname() : "익명") + " | " +
+                        post.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                 .isLiked(isLiked)
                 .member(memberDTO)
                 .major(majorDTO)
