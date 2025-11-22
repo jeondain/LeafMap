@@ -37,9 +37,6 @@ public class Major extends BaseEntity {
     @OneToMany(mappedBy = "desiredMajor")
     private List<Member> interestedMembers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "major", cascade = CascadeType.ALL)
-    private List<MajorCategoryMap> majorCategoryMaps = new ArrayList<>();
-
     @OneToOne(mappedBy = "major", fetch = FetchType.LAZY)
     private Post post;
 

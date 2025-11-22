@@ -1,6 +1,6 @@
-package com.fromm.leafmap.domain.major.entity;
+package com.fromm.leafmap.domain.aptitude.entity;
 
-import com.fromm.leafmap.global.common.BaseEntity;
+import com.fromm.leafmap.domain.major.entity.Major;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,18 +9,20 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
-public class MajorCategoryMap extends BaseEntity {
+public class MajorQuestionWeight {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "major_category_map_id", nullable = false)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "aptitude_question_id")
+    private AptitudeQuestion aptitudeQuestion;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "major_id")
     private Major major;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "major_category_id")
-    private MajorCategory majorCategory;
+    @Column(nullable = false)
+    private int weight; // 1~5
 }

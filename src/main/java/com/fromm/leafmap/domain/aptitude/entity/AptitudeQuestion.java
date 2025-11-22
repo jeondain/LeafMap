@@ -1,6 +1,5 @@
 package com.fromm.leafmap.domain.aptitude.entity;
 
-import com.fromm.leafmap.domain.major.entity.MajorCategory;
 import com.fromm.leafmap.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,12 +21,6 @@ public class AptitudeQuestion extends BaseEntity {
 
     private String content;
 
-    private float weight;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "major_category_id")
-    private MajorCategory majorCategory;
-
     @OneToMany(mappedBy = "aptitudeQuestion", cascade = CascadeType.ALL)
-    private List<AptitudeOption> aptitudeOptions = new ArrayList<>();
+    private List<MajorQuestionWeight> weights = new ArrayList<>();
 }
