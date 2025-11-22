@@ -94,6 +94,17 @@ public class PostController {
         return ApiResponse.onSuccess(addPostResultDTO);
     }
 
+    @DeleteMapping(value = "/{boardType}/posts/{postId}")
+    @Operation(summary = "게시글 삭제")
+    public ApiResponse<String> deletePost(
+            @PathVariable BoardType boardType,
+            @PathVariable Long postId,
+            @CurrentMember Member member) {
+
+        postService.deletePost(boardType, postId, member);
+        return ApiResponse.onSuccess("게시글 삭제 완료");
+    }
+
     @PostMapping(value ="/{boardType}/posts/{postId}/like")
     @Operation(summary = "게시글 추천 토글", description = "추천하지 않은 상태라면 추천이 추가되고, 이미 추천한 상태라면 추천이 취소됩니다.")
     public ApiResponse<PostLikeResponseDTO.PostLikeResultDTO> toggleLike(

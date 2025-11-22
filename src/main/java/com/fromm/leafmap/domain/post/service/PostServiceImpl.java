@@ -202,7 +202,7 @@ public class PostServiceImpl implements PostService {
 
         // 작성자 검증
         if (post.getMember() == null || !post.getMember().getId().equals(member.getId())) {
-            throw new ErrorHandler(ErrorStatus._FORBIDDEN);
+            throw new ErrorHandler(ErrorStatus.POST_NO_PERMISSION);
         }
 
         String imageUrl = post.getImageUrl();
@@ -218,6 +218,23 @@ public class PostServiceImpl implements PostService {
         return PostResponseDTO.AddPostResultDTO.builder()
                 .postId(post.getId())
                 .build();
+    }
+
+    @Override
+    public void deletePost(BoardType boardType, Long postId, Member member) {
+        Post post = postRepository.findByIdAndBoardType(postId, boardType)
+                .orElseThrow(() -> new ErrorHandler(ErrorStatus.POST_NOT_FOUND));
+
+        // 작성자 검증
+        if (post.getMember() == null || !post.getMember().getId().equals(member.getId())) {
+            throw new ErrorHandler(ErrorStatus.POST_NO_PERMISSION);
+        }
+
+        postRepository.delete(post);
+
+        if (post.getImageUrl() != null) {
+            s3Uploader.delete(post.getImageUrl());
+        }
     }
 
     @Override
