@@ -184,6 +184,7 @@ public class PostServiceImpl implements PostService {
                 .isPublic(post.getIsPublic())
                 .likeCount(post.getLikeCount())
                 .badge(post.getBadge())
+                .isWriter(isPostWriter)
                 .authorInfo((post.getMember() != null ? post.getMember().getNickname() : "익명") + " | " +
                         post.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                 .isLiked(isLiked)
@@ -191,6 +192,49 @@ public class PostServiceImpl implements PostService {
                 .major(majorDTO)
                 .comments(commentDTOs)
                 .build();
+    }
+
+    @Override
+    @Transactional
+    public PostResponseDTO.AddPostResultDTO updatePost(BoardType boardType, Long postId, PostRequestDTO.UpdatePostRequestDTO request, MultipartFile image, Member member) {
+        Post post = postRepository.findByIdAndBoardType(postId, boardType)
+                .orElseThrow(() -> new ErrorHandler(ErrorStatus.POST_NOT_FOUND));
+
+        // 작성자 검증
+        if (post.getMember() == null || !post.getMember().getId().equals(member.getId())) {
+            throw new ErrorHandler(ErrorStatus.POST_NO_PERMISSION);
+        }
+
+        String imageUrl = post.getImageUrl();
+        if (image != null && !image.isEmpty()) {
+            imageUrl = s3Uploader.upload(image, "post-images");
+        }
+
+        if (request.getTitle() != null) post.setTitle(request.getTitle());
+        if (request.getContent() != null) post.setContent(request.getContent());
+        if (request.getAddress() != null) post.setAddress(request.getAddress());
+        post.setImageUrl(imageUrl);
+
+        return PostResponseDTO.AddPostResultDTO.builder()
+                .postId(post.getId())
+                .build();
+    }
+
+    @Override
+    public void deletePost(BoardType boardType, Long postId, Member member) {
+        Post post = postRepository.findByIdAndBoardType(postId, boardType)
+                .orElseThrow(() -> new ErrorHandler(ErrorStatus.POST_NOT_FOUND));
+
+        // 작성자 검증
+        if (post.getMember() == null || !post.getMember().getId().equals(member.getId())) {
+            throw new ErrorHandler(ErrorStatus.POST_NO_PERMISSION);
+        }
+
+        postRepository.delete(post);
+
+        if (post.getImageUrl() != null) {
+            s3Uploader.delete(post.getImageUrl());
+        }
     }
 
     @Override

@@ -26,6 +26,7 @@ public enum ErrorStatus implements BaseErrorCode {
 
     // Post
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "POST404", "해당하는 게시글이 존재하지 않습니다."),
+    POST_NO_PERMISSION(HttpStatus.FORBIDDEN, "POST403", "게시글에 대한 권한이 없습니다."),
 
     // Comment
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "COMMENT404", "해당하는 댓글이 존재하지 않습니다."),
