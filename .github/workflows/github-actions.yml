@@ -52,4 +52,8 @@ jobs:
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/leaf-map
             docker stop leaf-map || true
             docker rm leaf-map || true
-            docker run -d --name leaf-map -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/leaf-map
+            docker run -d \
+              --name leaf-map \
+              -p 8080:8080 \
+              -e OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}" \
+              ${{ secrets.DOCKERHUB_USERNAME }}/leaf-map
