@@ -13,4 +13,14 @@ public class PostRequestDTO {
         private String content;
         private String address;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdatePostRequestDTO {
+        private String title;
+        private String content;
+        private String address;
+    }
 }

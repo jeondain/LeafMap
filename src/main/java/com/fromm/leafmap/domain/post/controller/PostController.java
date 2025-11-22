@@ -71,7 +71,7 @@ public class PostController {
     }
 
     @GetMapping(value = "/{boardType}/posts/{postId}")
-    @Operation(summary = "게시판 상세 조회")
+    @Operation(summary = "게시글 상세 조회")
     public ApiResponse<PostResponseDTO.PostDetailResultDTO> getPostDetail(
             @PathVariable BoardType boardType,
             @PathVariable Long postId,
@@ -79,6 +79,19 @@ public class PostController {
 
         PostResponseDTO.PostDetailResultDTO postDetailResultDTO = postService.getPostDetail(boardType, postId, member);
         return ApiResponse.onSuccess(postDetailResultDTO);
+    }
+
+    @PatchMapping(value = "/{boardType}/posts/{postId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "게시글 수정", description = "게시글 정보는 JSON 형식으로, 이미지는 Multipart(Form-Data) 형식으로 함께 전달해주세요.\n\n")
+    public ApiResponse<PostResponseDTO.AddPostResultDTO> updatePost(
+            @PathVariable BoardType boardType,
+            @PathVariable Long postId,
+            @RequestPart(value = "data") PostRequestDTO.UpdatePostRequestDTO updatePostRequestDTO,
+            @RequestPart(value = "image", required = false) MultipartFile image,
+            @CurrentMember Member member) {
+
+        PostResponseDTO.AddPostResultDTO addPostResultDTO = postService.updatePost(boardType, postId, updatePostRequestDTO, image, member);
+        return ApiResponse.onSuccess(addPostResultDTO);
     }
 
     @PostMapping(value ="/{boardType}/posts/{postId}/like")

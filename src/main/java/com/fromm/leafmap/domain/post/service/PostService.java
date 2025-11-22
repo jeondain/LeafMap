@@ -16,5 +16,7 @@ public interface PostService {
 
     PostResponseDTO.PostDetailResultDTO getPostDetail(BoardType boardType, Long postId, Member member);
 
+    PostResponseDTO.AddPostResultDTO updatePost(BoardType boardType, Long postId, PostRequestDTO.UpdatePostRequestDTO request, MultipartFile image, Member member);
+
     void approvePost(BoardType boardType, Long postId, Member member);
 }
