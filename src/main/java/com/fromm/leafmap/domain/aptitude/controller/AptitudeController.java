@@ -1,5 +1,6 @@
 package com.fromm.leafmap.domain.aptitude.controller;
 
+import com.fromm.leafmap.domain.aptitude.dto.AptitudeRequestDTO;
 import com.fromm.leafmap.domain.aptitude.dto.AptitudeResponseDTO;
 import com.fromm.leafmap.domain.aptitude.service.AptitudeService;
 import com.fromm.leafmap.domain.member.entity.Member;
@@ -25,5 +26,15 @@ public class AptitudeController {
 
         AptitudeResponseDTO.GetQuestionsResultDTO getQuestionsResultDTO = aptitudeService.getQuestions(member);
         return ApiResponse.onSuccess(getQuestionsResultDTO);
+    }
+
+    @PostMapping
+    @Operation(summary = "전공 적성 검사 결과 전송")
+    public ApiResponse<AptitudeResponseDTO.GetAptitudeResultDTO> submitAnswer(
+            @RequestBody AptitudeRequestDTO.SubmitAnswerDTO submitAnswerDTO,
+            @CurrentMember Member member) {
+
+        AptitudeResponseDTO.GetAptitudeResultDTO getAptitudeResultDTO = aptitudeService.calculateResult(submitAnswerDTO);
+        return ApiResponse.onSuccess(getAptitudeResultDTO);
     }
 }

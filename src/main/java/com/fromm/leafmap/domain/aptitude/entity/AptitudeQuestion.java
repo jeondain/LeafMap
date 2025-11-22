@@ -21,8 +21,6 @@ public class AptitudeQuestion extends BaseEntity {
 
     private String content;
 
-    private float weight;
-
     @OneToMany(mappedBy = "aptitudeQuestion", cascade = CascadeType.ALL)
     private List<MajorQuestionWeight> weights = new ArrayList<>();
 }

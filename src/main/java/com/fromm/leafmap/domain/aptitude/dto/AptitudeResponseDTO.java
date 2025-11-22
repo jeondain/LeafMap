@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Map;
 
 public class AptitudeResponseDTO {
 
@@ -22,7 +23,15 @@ public class AptitudeResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class QuestionDTO {
-        private Long questionID;
+        private Long questionId;
         private String content;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GetAptitudeResultDTO {
+        private Map<String, Double> majorScores;
     }
 }
