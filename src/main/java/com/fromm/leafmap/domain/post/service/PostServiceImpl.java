@@ -34,7 +34,11 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public PostResponseDTO.RestaurantPostListResultDTO getRestaurantPostList(Member member) {
-        List<Post> posts = postRepository.findTop10ByBoardTypeAndIsPublicTrueOrderByCreatedAtDesc(BoardType.RESTAURANT);
+
+        List<Post> posts = postRepository.findRandom10RestaurantPosts(
+                BoardType.RESTAURANT,
+                PageRequest.of(0, 10)
+        );
 
         List<PostResponseDTO.RestaurantPostPreviewDTO> previewList = posts.stream()
                 .map(post -> PostResponseDTO.RestaurantPostPreviewDTO.builder()
@@ -42,7 +46,6 @@ public class PostServiceImpl implements PostService {
                         .imageUrl(post.getImageUrl())
                         .build())
                 .toList();
-
 
         return PostResponseDTO.RestaurantPostListResultDTO.builder()
                 .posts(previewList)
@@ -92,6 +95,7 @@ public class PostServiceImpl implements PostService {
                             .postId(post.getId())
                             .title(post.getTitle())
                             .contentPreview(extractFirstLine(post.getContent()))
+                            .badge(post.getBadge())
                             .authorInfo((post.getMember() != null ? post.getMember().getNickname() : "익명") + " | " +
                                     post.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 

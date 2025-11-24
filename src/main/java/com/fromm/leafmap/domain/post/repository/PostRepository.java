@@ -16,7 +16,14 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     Optional<Post> findByIdAndBoardType(Long id, BoardType boardType);
 
-    List<Post> findTop10ByBoardTypeAndIsPublicTrueOrderByCreatedAtDesc(BoardType boardType);
+    @Query("SELECT p FROM Post p " +
+            "WHERE p.boardType = :boardType " +
+            "AND p.isPublic = true " +
+            "AND p.badge = true " +
+            "AND p.imageUrl IS NOT NULL " +
+            "AND p.imageUrl <> '' " +
+            "ORDER BY function('RAND')")
+    List<Post> findRandom10RestaurantPosts(@Param("boardType") BoardType boardType, Pageable pageable);
 
     @Query("SELECT p FROM Post p " +
             "WHERE p.boardType = :boardType " +
