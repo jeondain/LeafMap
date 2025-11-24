@@ -56,7 +56,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                     "AND (:keyword IS NULL OR " +
                     "     p.title REGEXP REPLACE(:keyword, ' ', '|') OR " +
                     "     p.content REGEXP REPLACE(:keyword, ' ', '|')) " +
-                    "ORDER BY p.created_at DESC",
+                    "ORDER BY p.created_at DESC " +
+                    "LIMIT 5",
             nativeQuery = true)
     List<Post> searchPostsByCondition(
             @Param("boardType") String boardType,
