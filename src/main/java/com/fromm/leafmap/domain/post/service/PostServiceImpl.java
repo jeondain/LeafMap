@@ -61,13 +61,15 @@ public class PostServiceImpl implements PostService {
             imageUrl = s3Uploader.upload(image, "post-images");
         }
 
+        boolean isPublic = (boardType == BoardType.RESTAURANT);
+
         Post post = Post.builder()
                 .boardType(boardType)
                 .title(request.getTitle())
                 .content(request.getContent())
                 .address(request.getAddress())
                 .imageUrl(imageUrl)
-                .isPublic(false)
+                .isPublic(isPublic)
                 .member(member)
                 .likeCount(0)
                 .badge(false)
