@@ -50,4 +50,22 @@ public class CommentServiceImpl implements CommentService {
                 .commentId(comment.getId())
                 .build();
     }
+
+    @Override
+    @Transactional
+    public void deleteComment(Long postId, Long commentId, Member member) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new ErrorHandler(ErrorStatus.COMMENT_NOT_FOUND));
+
+        if (!comment.getPost().getId().equals(postId)) {
+            throw new ErrorHandler(ErrorStatus.POST_NOT_FOUND);
+        }
+
+        // 작성자 검증
+        if (!comment.getMember().getId().equals(member.getId())) {
+            throw new ErrorHandler(ErrorStatus.COMMENT_NO_PERMISSION);
+        }
+
+        commentRepository.delete(comment);
+    }
 }

@@ -30,7 +30,8 @@ public enum ErrorStatus implements BaseErrorCode {
 
     // Comment
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "COMMENT404", "해당하는 댓글이 존재하지 않습니다."),
-    INVALID_COMMENT_PARENT(HttpStatus.BAD_REQUEST, "COMMENT400", "부모 댓글이 해당 게시글에 속하지 않습니다.");
+    INVALID_COMMENT_PARENT(HttpStatus.BAD_REQUEST, "COMMENT400", "부모 댓글이 해당 게시글에 속하지 않습니다."),
+    COMMENT_NO_PERMISSION(HttpStatus.FORBIDDEN, "COMMENT403", "댓글에 대한 권한이 없습니다.")
     ;
 
     private final HttpStatus httpStatus;
