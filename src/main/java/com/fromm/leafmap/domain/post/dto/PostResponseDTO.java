@@ -19,12 +19,15 @@ public class PostResponseDTO {
         private Long postId;
     }
 
-    @Getter
     @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class PostPreviewDTO {
         private Long postId;
         private String title;
         private String contentPreview; // 내용 첫 줄
+        private Boolean badge;
         private Boolean isPublic;
 
         private Long majorId;
@@ -35,8 +38,10 @@ public class PostResponseDTO {
         private String authorInfo;
     }
 
-    @Getter
     @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class PostListResultDTO {
         private List<PostPreviewDTO> posts;
         private Long nextCursor;

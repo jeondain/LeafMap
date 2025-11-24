@@ -95,6 +95,7 @@ public class PostServiceImpl implements PostService {
                             .postId(post.getId())
                             .title(post.getTitle())
                             .contentPreview(extractFirstLine(post.getContent()))
+                            .badge(post.getBadge())
                             .authorInfo((post.getMember() != null ? post.getMember().getNickname() : "익명") + " | " +
                                     post.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
