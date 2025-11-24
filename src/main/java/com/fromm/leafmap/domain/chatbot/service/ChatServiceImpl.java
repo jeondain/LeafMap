@@ -42,14 +42,14 @@ public class ChatServiceImpl implements ChatService {
         SearchCondition condition = parseWithAI(request.getMessage());
 
         log.info("파싱 결과 - boardType: {}, address: {}, hasBadge: {}, keyword: {}",
-                condition.getBoardType(),
+                condition.getBoardType() != null ? condition.getBoardType().toString() : null,  // ✅ 이미 null 체크 있음
                 condition.getAddress(),
                 condition.getHasBadge(),
                 condition.getKeyword());
 
         // 2. DB 검색
         List<Post> posts = postRepository.searchPostsByCondition(
-                condition.getBoardType().toString(),
+                condition.getBoardType() != null ? condition.getBoardType().toString() : null,  // ✅ 이미 null 체크 있음
                 condition.getAddress(),
                 condition.getHasBadge(),
                 condition.getKeyword()
@@ -90,20 +90,21 @@ public class ChatServiceImpl implements ChatService {
         규칙:
         - boardType: RESTAURANT(음식/카페), SHORTCUTS(지름길), FACILITY_USAGE(시설), MAJOR_TIPS(전공), CAMPUS_LIFE_TIPS(학교생활)
         - address: 지역명 추출 (예: "성신여대" → "성신")
-        - hasBadge: 뱃지 언급 여부
-        - keyword: **검색 성공률을 높이기 위해 유사어/동의어/관련어를 모두 포함하는데, 정확도가 우선이야.**
-          예시) 
-          - "카페" → "카페 커피 디저트 음료"
-          - "밥집" → "밥집 식당 맛집 음식점"
-          - "조용한 곳" → "조용한 조용 정숙 공부 집중"
+        - hasBadge: 배지/뱃지 언급 여부
+        - keyword: **가장 핵심적인 검색어만 추출** (중요)
+          **중요 원칙:**
+          1. 핵심 키워드 1-3개 추출
+          2. 건물명, 장소명은 반드시 포함
+          3. 유사어/동의어 1-2개 포함
+          4. 여러 키워드는 띄어쓰기로 구분
+           예시)
+              - "성신 밥집 추천해줘" → boardType: "RESTAURANT", address: 성신, keyword: "밥집 식당 맛집"
+              - "성신여대 근처 카페 추천해줘" → boardType: "RESTAURANT", address: 성신, keyword: "카페 커피"
+              - "혜인관까지 지름길" → boardType: "SHORTCUTS", address: null, keyword: "혜인관"
+              - "조용한 공부 장소" → boardType: null, address: null, keyword: "조용 공부" 
          
-        JSON만 출력:
-        {
-            "boardType": "RESTAURANT",
-            "address": "성신",
-            "hasBadge": null,
-            "keyword": "카페 커피 디저트 맛집"
-        }
+        응답 JSON 형식 (실제 질문 내용에 맞게 값을 채워야 함):
+          {"boardType": null, "address": null, "hasBadge": null, "keyword": "실제 추출된 키워드"}    
         """, message);
 
         try {
