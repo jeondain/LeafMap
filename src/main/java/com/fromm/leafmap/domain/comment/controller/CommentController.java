@@ -29,5 +29,16 @@ public class CommentController {
         CommentResponseDTO.AddCommentResultDTO addCommentResultDTO = commentService.addComment(postId, addCommentDTO, member);
         return ApiResponse.onSuccess(addCommentResultDTO);
     }
+
+    @DeleteMapping("/{commentId}")
+    @Operation(summary = "댓글 삭제")
+    public ApiResponse<String> deleteComment(
+            @PathVariable Long postId,
+            @PathVariable Long commentId,
+            @CurrentMember Member member) {
+
+        commentService.deleteComment(postId, commentId, member);
+        return ApiResponse.onSuccess("댓글 삭제 완료");
+    }
 }
 
