@@ -86,7 +86,9 @@ public class MemberSerivceImpl implements MemberService {
         return MemberResponseDTO.GetMemberInfoResultDTO.builder()
                 .memberId(member.getId())
                 .nickname(member.getNickname())
+                .majorId(member.getMajor() != null ? member.getMajor().getId() : null)
                 .major(member.getMajor() != null ? member.getMajor().getName() : null)
+                .desiredMajorId(member.getDesiredMajor() != null ? member.getDesiredMajor().getId() : null)
                 .desiredMajor(member.getDesiredMajor() != null ? member.getDesiredMajor().getName() : null)
                 .build();
     }

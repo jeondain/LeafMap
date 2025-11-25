@@ -32,7 +32,9 @@ public class MemberResponseDTO {
     public static class GetMemberInfoResultDTO {
         private Long memberId;
         private String nickname;
+        private Long majorId;
         private String major;
+        private Long desiredMajorId;
         private String desiredMajor;
     }
 }
