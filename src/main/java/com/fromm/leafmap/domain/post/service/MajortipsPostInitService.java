@@ -35,6 +35,7 @@ public class MajortipsPostInitService {
 
             Post post = Post.builder()
                     .title(major.getName())
+                    .content(major.getDescription())
                     .isPublic(true)
                     .boardType(BoardType.MAJOR_TIPS)
                     .major(major)
