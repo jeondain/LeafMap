@@ -42,14 +42,14 @@ public class ChatServiceImpl implements ChatService {
         SearchCondition condition = parseWithAI(request.getMessage());
 
         log.info("파싱 결과 - boardType: {}, address: {}, hasBadge: {}, keyword: {}",
-                condition.getBoardType() != null ? condition.getBoardType().toString() : null,  // ✅ 이미 null 체크 있음
+                condition.getBoardType() != null ? condition.getBoardType().toString() : null,
                 condition.getAddress(),
                 condition.getHasBadge(),
                 condition.getKeyword());
 
         // 2. DB 검색
         List<Post> posts = postRepository.searchPostsByCondition(
-                condition.getBoardType() != null ? condition.getBoardType().toString() : null,  // ✅ 이미 null 체크 있음
+                condition.getBoardType() != null ? condition.getBoardType().toString() : null,
                 condition.getAddress(),
                 condition.getHasBadge(),
                 condition.getKeyword()

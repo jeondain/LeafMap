@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/posts/{postId}/comments")
+@RequestMapping("api/boards/{postId}/comments")
 public class CommentController {
 
     private final CommentService commentService;
