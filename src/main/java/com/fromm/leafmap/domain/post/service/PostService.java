@@ -1,0 +1,24 @@
+package com.fromm.leafmap.domain.post.service;
+
+import com.fromm.leafmap.domain.member.entity.Member;
+import com.fromm.leafmap.domain.post.dto.PostRequestDTO;
+import com.fromm.leafmap.domain.post.dto.PostResponseDTO;
+import com.fromm.leafmap.domain.post.entity.BoardType;
+import org.springframework.web.multipart.MultipartFile;
+
+public interface PostService {
+
+    PostResponseDTO.RestaurantPostListResultDTO getRestaurantPostList(Member member);
+
+    PostResponseDTO.AddPostResultDTO addPost(BoardType boardType, PostRequestDTO.AddPostRequestDTO request, MultipartFile image, Member member);
+
+    PostResponseDTO.PostListResultDTO getPostList(BoardType boardType, Member member, Long cursor, int limit);
+
+    PostResponseDTO.PostDetailResultDTO getPostDetail(BoardType boardType, Long postId, Member member);
+
+    PostResponseDTO.AddPostResultDTO updatePost(BoardType boardType, Long postId, PostRequestDTO.UpdatePostRequestDTO request, MultipartFile image, Member member);
+
+    void deletePost(BoardType boardType, Long postId, Member member);
+
+    void approvePost(BoardType boardType, Long postId, Member member);
+}
