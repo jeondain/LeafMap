@@ -9,12 +9,16 @@ import com.fromm.leafmap.domain.post.dto.PostRequestDTO;
 import com.fromm.leafmap.domain.post.dto.PostResponseDTO;
 import com.fromm.leafmap.domain.post.entity.BoardType;
 import com.fromm.leafmap.domain.post.entity.Post;
+import com.fromm.leafmap.domain.post.event.PostCreatedEvent;
+import com.fromm.leafmap.domain.post.event.PostDeletedEvent;
+import com.fromm.leafmap.domain.post.event.PostUpdatedEvent;
 import com.fromm.leafmap.domain.post.repository.PostLikeRepository;
 import com.fromm.leafmap.domain.post.repository.PostRepository;
 import com.fromm.leafmap.global.apiPayload.code.status.ErrorStatus;
-import com.fromm.leafmap.global.apiPayload.exception.handler.ErrorHandler;
+import com.fromm.leafmap.global.exception.handler.ErrorHandler;
 import com.fromm.leafmap.global.s3.S3Uploader;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +34,7 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final PostLikeRepository postLikeRepository;
     private final S3Uploader s3Uploader;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Override
     @Transactional
@@ -76,6 +81,7 @@ public class PostServiceImpl implements PostService {
                 .build();
 
         postRepository.save(post);
+        eventPublisher.publishEvent(new PostCreatedEvent(post));
         return PostResponseDTO.AddPostResultDTO.builder()
                 .postId(post.getId())
                 .build();
@@ -221,6 +227,7 @@ public class PostServiceImpl implements PostService {
         if (request.getAddress() != null) post.setAddress(request.getAddress());
         post.setImageUrl(imageUrl);
 
+        eventPublisher.publishEvent(new PostUpdatedEvent(post));
         return PostResponseDTO.AddPostResultDTO.builder()
                 .postId(post.getId())
                 .build();
@@ -237,6 +244,7 @@ public class PostServiceImpl implements PostService {
         }
 
         postRepository.delete(post);
+        eventPublisher.publishEvent(new PostDeletedEvent(postId));
 
         if (post.getImageUrl() != null) {
             s3Uploader.delete(post.getImageUrl());
@@ -254,5 +262,6 @@ public class PostServiceImpl implements PostService {
                 .orElseThrow(() -> new ErrorHandler(ErrorStatus.POST_NOT_FOUND));
 
         post.setIsPublic(true);
+        eventPublisher.publishEvent(new PostUpdatedEvent(post));
     }
 }

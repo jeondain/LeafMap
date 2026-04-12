@@ -16,6 +16,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     Optional<Post> findByIdAndBoardType(Long id, BoardType boardType);
 
+    @Query("SELECT p FROM Post p WHERE p.isPublic = true")
+    List<Post> findAllByIsPublicTrue();
+
     @Query("SELECT p FROM Post p " +
             "WHERE p.boardType = :boardType " +
             "AND p.isPublic = true " +

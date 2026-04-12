@@ -8,7 +8,7 @@ import com.fromm.leafmap.domain.member.entity.Member;
 import com.fromm.leafmap.domain.post.entity.Post;
 import com.fromm.leafmap.domain.post.repository.PostRepository;
 import com.fromm.leafmap.global.apiPayload.code.status.ErrorStatus;
-import com.fromm.leafmap.global.apiPayload.exception.handler.ErrorHandler;
+import com.fromm.leafmap.global.exception.handler.ErrorHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

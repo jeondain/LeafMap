@@ -3,7 +3,7 @@ package com.fromm.leafmap.global.annotation;
 import com.fromm.leafmap.domain.member.entity.Member;
 import com.fromm.leafmap.domain.member.repository.MemberRepository;
 import com.fromm.leafmap.global.apiPayload.code.status.ErrorStatus;
-import com.fromm.leafmap.global.apiPayload.exception.handler.ErrorHandler;
+import com.fromm.leafmap.global.exception.handler.ErrorHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.core.Authentication;

@@ -3,7 +3,7 @@ package com.fromm.leafmap.domain.major.service;
 import com.fromm.leafmap.domain.major.entity.Major;
 import com.fromm.leafmap.domain.major.repository.MajorRepository;
 import com.fromm.leafmap.global.apiPayload.code.status.ErrorStatus;
-import com.fromm.leafmap.global.apiPayload.exception.handler.ErrorHandler;
+import com.fromm.leafmap.global.exception.handler.ErrorHandler;
 import com.fromm.leafmap.global.s3.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
