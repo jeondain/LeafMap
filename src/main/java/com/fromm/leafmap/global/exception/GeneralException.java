@@ -1,4 +1,4 @@
-package com.fromm.leafmap.global.apiPayload.exception;
+package com.fromm.leafmap.global.exception;
 
 import com.fromm.leafmap.global.apiPayload.code.BaseErrorCode;
 import com.fromm.leafmap.global.apiPayload.code.ErrorReasonDTO;

@@ -11,7 +11,7 @@ import com.fromm.leafmap.domain.post.dto.PostResponseDTO;
 import com.fromm.leafmap.domain.post.entity.Post;
 import com.fromm.leafmap.domain.post.repository.PostRepository;
 import com.fromm.leafmap.global.apiPayload.code.status.ErrorStatus;
-import com.fromm.leafmap.global.apiPayload.exception.handler.ErrorHandler;
+import com.fromm.leafmap.global.exception.handler.ErrorHandler;
 import com.fromm.leafmap.global.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;

@@ -1,0 +1,13 @@
+{
+  "properties": {
+    "id": { "type": "long" },
+    "boardType": { "type": "keyword" },
+    "title": { "type": "text", "analyzer": "nori_analyzer" },
+    "content": { "type": "text", "analyzer": "nori_analyzer" },
+    "address": { "type": "text", "analyzer": "nori_analyzer" },
+    "badge": { "type": "boolean" },
+    "likeCount": { "type": "integer" },
+    "createdAt": { "type": "date", "format": "yyyy-MM-dd'T'HH:mm:ss.SSS" },
+    "imageUrl": { "type": "keyword" }
+  }
+}
